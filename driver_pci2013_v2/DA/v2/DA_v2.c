@@ -13,7 +13,7 @@
 #define S_FUNCTION_NAME  DA_v1
 #define S_FUNCTION_LEVEL 2
 
-#define NUMBER_OF_ARGS 4
+#define NUMBER_OF_ARGS 4//channel,Ts,volt,range
 
 #define CHANNEL_INDEX 0
 #define CHANNEL_ARG(S) ssGetSFcnParam(S,CHANNEL_INDEX)
@@ -21,17 +21,16 @@
 #define SAMPLE_TIME_INDEX 1
 #define SAMPLE_TIME_ARG(S) ssGetSFcnParam(S,SAMPLE_TIME_INDEX)
 
-#define DIGITAL_VALUE_INDEX 2
-#define DIGITAL_VALUE_ARG(S) ssGetSFcnParam(S,DIGITAL_VALUE_INDEX)
+#define VOLT_VALUE_INDEX 2
+#define VOLT_VALUE_ARG(S) ssGetSFcnParam(S,VOLT_VALUE_INDEX)
 
 #define RANGE_INDEX 3
 #define RANGE_ARG(S) ssGetSFcnParam(S,RANGE_INDEX)
 
 
 #define NO_I_WORKS 3		//int work vector numbers
-#define nDAData_I_IND 0  	//nDAData
+#define nDAData_I_IND 0  	//nDAData,16bits
 #define LNR_BASE_I_IND 1 	//lnr_base
-#define CHANNELS_I_IND 2 	//channel numbers
 
 #include "simstruc.h"
 #include "c_tool.c"
@@ -55,19 +54,19 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
 
-    nChannels=(uint_T)mxGetN(CHANNEL_ARG(S));
+    // nChannels=(uint_T)mxGetN(CHANNEL_ARG(S));
 	ssSetIWorkValue(S,CHANNELS_I_IND,nChannels);
 	
-	if(nChannels>2)
-	{
-		sprintf(msg,"Channel must be [1] or [2] or [1 2]!");
-		ssSetErrorStatus(S,msg);
-	}
-	if (!ssSetNumInputPorts(S,nChannels)) return;
-	for(i=0;i<nChannels;i++)
-	{
-		ssSetInputPortWidth(S,i,1);
-    }
+	// if(nChannels>2)
+	// {
+		// sprintf(msg,"Channel must be [1] or [2] or [1 2]!");
+		// ssSetErrorStatus(S,msg);
+	// }
+	if (!ssSetNumInputPorts(S,1)) return;
+	// for(i=0;i<nChannels;i++)
+	// {
+	ssSetInputPortWidth(S,i,1);
+    // }
 	
     ssSetNumSampleTimes(S, 1);
     ssSetInputPortRequiredContiguous(S, 0, true); /*direct input signal access*/
@@ -125,8 +124,8 @@ static void mdlInitializeSampleTimes(SimStruct *S)
   static void mdlStart(SimStruct *S)
   {
 #ifndef MATLAB_MEX_FILE
-	uint32_T lnr_base=0x927d5000;//0x921d5000,0x923d5000,0x925d5000,0x927d5000,change after restarted
-	real_T volt=*mxGetPr(DIGITAL_VALUE_ARG(S));//voltage we want
+	uint32_T lnr_base=0x929d5000;//0x921d5000,0x923d5000,0x925d5000,0x927d5000,0x929d5000,change after restarted
+	real_T volt=*mxGetPr(VOLT_VALUE_ARG(S));//voltage we want
 	
 	volatile uint32_T *destiny_addr;
 	
