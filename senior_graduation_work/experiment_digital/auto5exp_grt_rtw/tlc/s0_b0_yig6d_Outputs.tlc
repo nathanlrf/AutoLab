@@ -1,0 +1,50 @@
+%implements s0_b0_yig6d_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign tlcOutputsFcnOfS0B1 = OpaqueTLCBlockFcn("Outputs", 0, 1, 0, 2)
+%<SLibCG_TrackContStates(0)>\
+%<SLibCG_TrackParam(0)>\
+%<SLibCG_TrackBlockIO(0)>\
+/* Switch: '<S1>/Environment Switch' incorporates:
+ *  Constant: '<S1>/Switch Control'
+ *  TransferFcn: '<Root>/Transfer Fcn'
+ */
+if (auto5exp_P.SwitchControl_Value) {
+    auto5exp_B.EnvironmentSwitch = auto5exp_P.TransferFcn_C * auto5exp_X.TransferFcn_CSTATE;
+} else {
+    auto5exp_B.EnvironmentSwitch = %<(SLibCG_SE(SLibCG_Grnd(0, 0, 1, "", -1, "", 0)))>;
+}
+/* End of Switch: '<S1>/Environment Switch' */
+if (%<(SLibCGIRIsSampleHit(1, 0))>) {
+%<tlcOutputsFcnOfS0B1>\
+}
+/* Step: '<Root>/Step' */
+if (%<(SLibCG_SE(LibGetTaskTime(0)))> < auto5exp_P.Step_Time) {
+    tmp = auto5exp_P.Step_Y0;
+} else {
+    tmp = auto5exp_P.Step_YFinal;
+}
+/* End of Step: '<Root>/Step' */
+
+/* Sum: '<Root>/Sum' */
+auto5exp_B.Sum = tmp - auto5exp_B.EnvironmentSwitch;
+if (%<(SLibCGIRIsSampleHit(1, 0))>) {
+    /* DiscreteTransferFcn: '<Root>/Discrete Transfer Fcn' */
+    auto5exp_B.DiscreteTransferFcn = auto5exp_B.Sum * auto5exp_P.DiscreteTransferFcn_NumCoef;
+    auto5exp_B.DiscreteTransferFcn /= auto5exp_P.DiscreteTransferFcn_DenCoef;
+}
+%<SLibInsertSolverResetCode()>\
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Outputs(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 2, fcnProtoType)>
+
+%assign localVarDecl = ""
+%openfile localVarDecl
+real_T tmp;
+
+%closefile localVarDecl
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction

@@ -1,0 +1,26 @@
+%implements s0_b0_yig6d_Derivatives "C"
+
+%function Derivatives(block, system) Output
+%<SLibCG_TrackContStatesDerivative(0)>\
+_rtXdot = %<(SLibCG_SE(SLibGetContStatesDerivativeStructPtr()))>;
+%<SLibCG_TrackContStates(0)>\
+%<SLibCG_TrackParam(0)>\
+%<SLibCG_TrackBlockIO(0)>\
+/* Derivatives for TransferFcn: '<Root>/Transfer Fcn' */
+_rtXdot->TransferFcn_CSTATE = 0.0;
+_rtXdot->TransferFcn_CSTATE += auto5exp_P.TransferFcn_A * auto5exp_X.TransferFcn_CSTATE;
+_rtXdot->TransferFcn_CSTATE += auto5exp_B.DiscreteTransferFcn;
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Derivatives(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 3, fcnProtoType)>
+
+%assign localVarDecl = ""
+%openfile localVarDecl
+XDot_auto5exp_T *_rtXdot;
+
+%closefile localVarDecl
+%<LibSetSystemField(system, "CachedDerivativeLocalVars", localVarDecl)>
+%endfunction
