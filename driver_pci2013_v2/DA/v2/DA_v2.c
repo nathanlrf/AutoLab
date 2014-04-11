@@ -115,7 +115,7 @@ static void mdlInitializeSampleTimes(SimStruct *S)
   static void mdlStart(SimStruct *S)
   {
 #ifndef MATLAB_MEX_FILE
-	uint32_T lnr_base=0x929d5000;//0x921d5000,0x923d5000,0x925d5000,0x927d5000,0x929d5000,change after restarted
+	uint32_T lnr_base=0x931d5000;//0x921d5000,0x923d5000,0x925d5000,0x927d5000,0x929d5000,0x931d5000,change after restarted
 	real_T volt=*mxGetPr(VOLT_VALUE_ARG(S));//voltage we want
 	
 	volatile uint32_T *destiny_addr;
@@ -128,7 +128,7 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	channel = *mxGetPr(CHANNEL_ARG(S));
 	range = *mxGetPr(RANGE_ARG(S));
 	
-	// ssSetIWorkValue(S,LNR_BASE_I_IND,lnr_base);
+	ssSetIWorkValue(S,LNR_BASE_I_IND,lnr_base);
 	
 	printf("Channel selected is %d\n",channel);
 	printf("Input value is %fV\n",volt);
@@ -160,17 +160,16 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	nDAData=(nDAData>4095)?4095:nDAData;
 	nDAData=(nDAData<0)?0:nDAData;
 	
-	// ssSetIWorkValue(S,nDAData_I_IND,nDAData);
+	ssSetIWorkValue(S,nDAData_I_IND,nDAData);
 	printf("nDAData is 0x%x\n",nDAData);
 	
 	// for(i=0;i<nChannels;i++)
 	// {
 		// channel=*(mxGetPr(CHANNEL_ARG(S))+i)-1;
-		// destiny_addr=(uint32_T *)(lnr_base+reset_port[channel]);
-		// printf("channel selected is %d\n",channel);
-		// printf("destiny_addr in mdlstart is 0x%x\n",destiny_addr);
-		// *destiny_addr=0x1;//reset DA FIFO
-		// delay(16e-6);
+	destiny_addr=(uint32_T *)(lnr_base+reset_port[channel-1]);
+	printf("destiny_addr in mdlstart is 0x%x\n",destiny_addr);
+	*destiny_addr=0x1;//reset DA FIFO
+	delay(16e-6);
 		// delay(60e-6);
 		
 	// }
@@ -194,25 +193,24 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 {
 #ifndef MATLAB_MEX_FILE
 
-	// uint32_T lnr_base = ssGetIWorkValue(S,LNR_BASE_I_IND);;//change after restarted
-	// int32_T nDAData = ssGetIWorkValue(S,nDAData_I_IND);
-	// uint_T nChannels=ssGetIWorkValue(S,CHANNELS_I_IND);
-	// volatile uint32_T *destiny_addr;
-	// int_T i,channel;
+	uint32_T lnr_base = ssGetIWorkValue(S,LNR_BASE_I_IND);;//change after restarted
+	int32_T nDAData = ssGetIWorkValue(S,nDAData_I_IND);
+	volatile uint32_T *destiny_addr;
+	int_T i,channel;
 	
-
+	printf("nDAData is 0x%x\n",nDAData);
 	// for(i=0;i<nChannels;i++)
 	// {
-		// channel=*(mxGetPr(CHANNEL_ARG(S))+i)-1;
-		// destiny_addr=(uint32_T *)(lnr_base+data_port[channel]);
-		// printf("lnr_base+data_port in mdlOutputs is 0x%x\n",destiny_addr);
-		// *destiny_addr=nDAData;
-		// delay(16e-6);
+	channel=*mxGetPr(CHANNEL_ARG(S))-1;
+	destiny_addr=(uint32_T *)(lnr_base+data_port[channel]);
+	printf("lnr_base+data_port in mdlOutputs is 0x%x\n",destiny_addr);
+	
+	*destiny_addr=nDAData;
+	delay(16e-6);
 		// delay(60e-6);
 	// }
 	
 	// printf("nDAData in mdlOutputs is 0x%x\n",nDAData);
-	// printf("lnr_base+data_port=0x%x\n",lnr_base+data_port);
 	
 	// printf("Simulating...\n");
 #endif	
@@ -230,24 +228,24 @@ static void mdlTerminate(SimStruct *S)
 {
 #ifndef MATLAB_MEX_FILE
 
-	// uint32_T lnr_base = ssGetIWorkValue(S,LNR_BASE_I_IND);//change after restarted
-	// volatile uint32_T *destiny_addr;
+	uint32_T lnr_base = ssGetIWorkValue(S,LNR_BASE_I_IND);//change after restarted
+	volatile uint32_T *destiny_addr;
 	// uint_T nChannels = ssGetIWorkValue(S,CHANNELS_I_IND);
 	
-	// int_T i,channel;
+	int_T i,channel;
 	
 	// for(i=0;i<nChannels;i++)
 	// {
-		// channel=*(mxGetPr(CHANNEL_ARG(S))+i)-1;
-		// destiny_addr=(uint32_T *)(lnr_base+reset_port[channel]);
-		// printf("lnr_base+reset_port in mdlTerminate is 0x%x\n",destiny_addr);
-		// *destiny_addr=0x1;//reset DA FIFO
-		// delay(16e-6);
+	channel=*mxGetPr(CHANNEL_ARG(S))-1;
+	destiny_addr=(uint32_T *)(lnr_base+reset_port[channel]);
+	printf("lnr_base+reset_port in mdlTerminate is 0x%x\n",destiny_addr);
+	*destiny_addr=0x1;//reset DA FIFO
+	delay(16e-6);
 		// delay(60e-6);
 	// }
 	// printf("lnr_base+reset_port in mdlTerminate is 0x%x\n",lnr_base+reset_port);
 	
-	printf("Simulation Ends!\n");
+	// printf("Simulation Ends!\n");
 #endif	
 }
 
