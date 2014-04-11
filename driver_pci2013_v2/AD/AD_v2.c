@@ -116,7 +116,7 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	double Ts=*mxGetPr(SAMPLE_TIME_ARG(S));
 	int range =(int_T) *mxGetPr(RANGE_ARG(S));
 	
-	uint32_T lnr_base=0x923d5000;//0x921d5000,0x923d5000,0x925d5000,change after restarted;
+	uint32_T lnr_base=0x931d5000;//0x921d5000,0x923d5000,0x925d5000,0x931d5000,change after restarted;
 	
 	volatile uint32_T *destiny_addr;
 	int_T i,j,channel;

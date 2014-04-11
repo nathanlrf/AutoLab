@@ -89,7 +89,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 #ifndef MATLAB_MEX_FILE
 
 	volatile uint32_T *destiny_addr;
-	uint32_T lnr_addr=0x921d5000;//0x925d5000;
+	uint32_T lnr_addr=0x931d5000;//0x921d5000;0x925d5000;
 	int32_T d_input;
 	int result;
 	

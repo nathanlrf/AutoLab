@@ -152,7 +152,7 @@ REQ_INCLUDES := $(MATLAB_ROOT)/simulink/include;$(MATLAB_ROOT)/extern/include;$(
 REQ_INCLUDES += ;$(MATLAB_ROOT)/toolbox/shared/can/src/scanutil;$(RTWINDIR)/src
 
 # additional includes
-REQ_INCLUDES += ;C:/Users/lenovo/Documents/MATLAB/senior_graduation_work/driver_pci2013_v2/DI/DI_model_rtwin_win32;C:/Users/lenovo/Documents/MATLAB/senior_graduation_work/driver_pci2013_v2/DI;$(MATLAB_ROOT)/rtw/c/src/ext_mode/common
+REQ_INCLUDES += ;C:/Users/lenovo/Documents/MATLAB/senior_graduation_work/SVN_dir/trunk/driver_pci2013_v2/DI/DI_model_rtwin_win32;C:/Users/lenovo/Documents/MATLAB/senior_graduation_work/SVN_dir/trunk/driver_pci2013_v2/DI;$(MATLAB_ROOT)/rtw/c/src/ext_mode/common
 
 # shared includes
 ifneq ($(SHARED_SRC_DIR),)
