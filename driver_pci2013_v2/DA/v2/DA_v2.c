@@ -10,7 +10,7 @@
  * (i.e. replace sfuntmpl_basic with the name of your S-function).
  */
 
-#define S_FUNCTION_NAME  DA_v1
+#define S_FUNCTION_NAME  DA_v2
 #define S_FUNCTION_LEVEL 2
 
 #define NUMBER_OF_ARGS 4//channel,Ts,volt,range
@@ -28,7 +28,7 @@
 #define RANGE_ARG(S) ssGetSFcnParam(S,RANGE_INDEX)
 
 
-#define NO_I_WORKS 3		//int work vector numbers
+#define NO_I_WORKS 2		//int work vector numbers
 #define nDAData_I_IND 0  	//nDAData,16bits
 #define LNR_BASE_I_IND 1 	//lnr_base
 
@@ -42,7 +42,6 @@ static uint32_T data_port[2]={0x500,0x540};
 
 static void mdlInitializeSizes(SimStruct *S)
 {
-	uint_T nChannels;
 	int_T i;
 	
     ssSetNumSFcnParams(S, NUMBER_OF_ARGS);  /* Number of expected parameters */
@@ -54,19 +53,10 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetNumContStates(S, 0);
     ssSetNumDiscStates(S, 0);
 
-    // nChannels=(uint_T)mxGetN(CHANNEL_ARG(S));
-	ssSetIWorkValue(S,CHANNELS_I_IND,nChannels);
-	
-	// if(nChannels>2)
-	// {
-		// sprintf(msg,"Channel must be [1] or [2] or [1 2]!");
-		// ssSetErrorStatus(S,msg);
-	// }
+	// DA only has input ports,only one channel at a time
 	if (!ssSetNumInputPorts(S,1)) return;
-	// for(i=0;i<nChannels;i++)
-	// {
-	ssSetInputPortWidth(S,i,1);
-    // }
+	
+	ssSetInputPortWidth(S,0,1);
 	
     ssSetNumSampleTimes(S, 1);
     ssSetInputPortRequiredContiguous(S, 0, true); /*direct input signal access*/
@@ -76,7 +66,8 @@ static void mdlInitializeSizes(SimStruct *S)
      * the mdlOutputs or mdlGetTimeOfNextVarHit functions.
      */
     ssSetInputPortDirectFeedThrough(S, 0, 1);
-
+	
+	//DA has no output
     if (!ssSetNumOutputPorts(S, 0)) return;
     // ssSetOutputPortWidth(S, 0, 1);
 
@@ -132,19 +123,22 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	int_T sign=1;
 	int32_T nDAData,range;//nDAData is original code write to DA board
 	
-	uint_T nChannels=ssGetIWorkValue(S,CHANNELS_I_IND);
+	// uint_T nChannels=ssGetIWorkValue(S,CHANNELS_I_IND);
     uint_T channel,i;
+	channel = *mxGetPr(CHANNEL_ARG(S));
 	range = *mxGetPr(RANGE_ARG(S));
 	
-	ssSetIWorkValue(S,LNR_BASE_I_IND,lnr_base);
+	// ssSetIWorkValue(S,LNR_BASE_I_IND,lnr_base);
 	
-	printf("Channel number is %d\n",nChannels);
-	printf("Input value is %f\n",volt);
+	printf("Channel selected is %d\n",channel);
+	printf("Input value is %fV\n",volt);
+	printf("Range is %d\n",range);
 	if(volt<0)
 	{
 		sign=-1;
 		volt = volt*(-1);
 	}
+	volt = volt*1000;//nDAData deal with mV,input volt is V
 	switch(range)
 	{
 		case 1://+/-5
@@ -166,7 +160,7 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	nDAData=(nDAData>4095)?4095:nDAData;
 	nDAData=(nDAData<0)?0:nDAData;
 	
-	ssSetIWorkValue(S,nDAData_I_IND,nDAData);
+	// ssSetIWorkValue(S,nDAData_I_IND,nDAData);
 	printf("nDAData is 0x%x\n",nDAData);
 	
 	// for(i=0;i<nChannels;i++)
@@ -200,11 +194,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 {
 #ifndef MATLAB_MEX_FILE
 
-	uint32_T lnr_base = ssGetIWorkValue(S,LNR_BASE_I_IND);;//change after restarted
-	int32_T nDAData = ssGetIWorkValue(S,nDAData_I_IND);
-	uint_T nChannels=ssGetIWorkValue(S,CHANNELS_I_IND);
-	volatile uint32_T *destiny_addr;
-	int_T i,channel;
+	// uint32_T lnr_base = ssGetIWorkValue(S,LNR_BASE_I_IND);;//change after restarted
+	// int32_T nDAData = ssGetIWorkValue(S,nDAData_I_IND);
+	// uint_T nChannels=ssGetIWorkValue(S,CHANNELS_I_IND);
+	// volatile uint32_T *destiny_addr;
+	// int_T i,channel;
 	
 
 	// for(i=0;i<nChannels;i++)
@@ -220,7 +214,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 	// printf("nDAData in mdlOutputs is 0x%x\n",nDAData);
 	// printf("lnr_base+data_port=0x%x\n",lnr_base+data_port);
 	
-	
+	// printf("Simulating...\n");
 #endif	
 }
 
@@ -236,11 +230,11 @@ static void mdlTerminate(SimStruct *S)
 {
 #ifndef MATLAB_MEX_FILE
 
-	uint32_T lnr_base = ssGetIWorkValue(S,LNR_BASE_I_IND);//change after restarted
-	volatile uint32_T *destiny_addr;
-	uint_T nChannels = ssGetIWorkValue(S,CHANNELS_I_IND);
+	// uint32_T lnr_base = ssGetIWorkValue(S,LNR_BASE_I_IND);//change after restarted
+	// volatile uint32_T *destiny_addr;
+	// uint_T nChannels = ssGetIWorkValue(S,CHANNELS_I_IND);
 	
-	int_T i,channel;
+	// int_T i,channel;
 	
 	// for(i=0;i<nChannels;i++)
 	// {
@@ -253,7 +247,7 @@ static void mdlTerminate(SimStruct *S)
 	// }
 	// printf("lnr_base+reset_port in mdlTerminate is 0x%x\n",lnr_base+reset_port);
 	
-	
+	printf("Simulation Ends!\n");
 #endif	
 }
 
