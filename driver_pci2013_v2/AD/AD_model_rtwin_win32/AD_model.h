@@ -5,7 +5,7 @@
  *
  * Model version              : 1.33
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Thu Apr 03 09:46:46 2014
+ * C source code generated on : Fri Apr 11 17:00:00 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -774,6 +774,7 @@
 typedef struct {
   real_T Get_Parameter_o1;             /* '<Root>/Get_Parameter ' */
   real_T Get_Parameter_o2;             /* '<Root>/Get_Parameter ' */
+  real_T Get_Parameter_o3;             /* '<Root>/Get_Parameter ' */
 } B_AD_model_T;
 
 /* Block states (auto storage) for system '<Root>' */
@@ -795,7 +796,7 @@ struct P_AD_model_T_ {
   real_T Get_Parameter_P1_Size[2];     /* Computed Parameter: Get_Parameter_P1_Size
                                         * Referenced by: '<Root>/Get_Parameter '
                                         */
-  real_T Get_Parameter_P1[2];          /* Expression: channel
+  real_T Get_Parameter_P1[3];          /* Expression: channel
                                         * Referenced by: '<Root>/Get_Parameter '
                                         */
   real_T Get_Parameter_P2_Size[2];     /* Computed Parameter: Get_Parameter_P2_Size
@@ -842,7 +843,7 @@ struct tag_RTM_AD_model_T {
       time_T sfcnPeriod[1];
       time_T sfcnOffset[1];
       int_T sfcnTsMap[1];
-      struct _ssPortOutputs outputPortInfo[2];
+      struct _ssPortOutputs outputPortInfo[3];
       uint_T attribs[3];
       mxArray *params[3];
       struct _ssDWorkRecord dWork[2];

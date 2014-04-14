@@ -115,7 +115,7 @@ static void mdlInitializeSampleTimes(SimStruct *S)
   static void mdlStart(SimStruct *S)
   {
 #ifndef MATLAB_MEX_FILE
-	uint32_T lnr_base=0x931d5000;//0x921d5000,0x923d5000,0x925d5000,0x927d5000,0x929d5000,0x931d5000,change after restarted
+	uint32_T lnr_base=0x925d5000;//0x921d5000,0x923d5000,0x925d5000,0x927d5000,0x929d5000,0x931d5000,change after restarted
 	real_T volt=*mxGetPr(VOLT_VALUE_ARG(S));//voltage we want
 	
 	volatile uint32_T *destiny_addr;

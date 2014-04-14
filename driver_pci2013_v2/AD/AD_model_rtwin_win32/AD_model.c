@@ -5,7 +5,7 @@
  *
  * Model version              : 1.33
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Thu Apr 03 09:46:46 2014
+ * C source code generated on : Fri Apr 11 17:00:00 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -164,10 +164,10 @@ RT_MODEL_AD_model_T *AD_model(void)
   AD_model_M->Timing.stepSize0 = 0.02;
 
   /* External mode info */
-  AD_model_M->Sizes.checksums[0] = (1967864313U);
-  AD_model_M->Sizes.checksums[1] = (1495869378U);
-  AD_model_M->Sizes.checksums[2] = (2030307676U);
-  AD_model_M->Sizes.checksums[3] = (798292879U);
+  AD_model_M->Sizes.checksums[0] = (997782705U);
+  AD_model_M->Sizes.checksums[1] = (3883225624U);
+  AD_model_M->Sizes.checksums[2] = (2680686323U);
+  AD_model_M->Sizes.checksums[3] = (2220993960U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -294,7 +294,7 @@ RT_MODEL_AD_model_T *AD_model(void)
       {
         ssSetPortInfoForOutputs(rts,
           &AD_model_M->NonInlinedSFcns.Sfcn0.outputPortInfo[0]);
-        _ssSetNumOutputPorts(rts, 2);
+        _ssSetNumOutputPorts(rts, 3);
 
         /* port 0 */
         {
@@ -308,6 +308,13 @@ RT_MODEL_AD_model_T *AD_model(void)
           _ssSetOutputPortNumDimensions(rts, 1, 1);
           ssSetOutputPortWidth(rts, 1, 1);
           ssSetOutputPortSignal(rts, 1, ((real_T *) &AD_model_B.Get_Parameter_o2));
+        }
+
+        /* port 2 */
+        {
+          _ssSetOutputPortNumDimensions(rts, 2, 1);
+          ssSetOutputPortWidth(rts, 2, 1);
+          ssSetOutputPortSignal(rts, 2, ((real_T *) &AD_model_B.Get_Parameter_o3));
         }
       }
 
@@ -372,8 +379,10 @@ RT_MODEL_AD_model_T *AD_model(void)
       /* Update connectivity flags for each port */
       _ssSetOutputPortConnected(rts, 0, 0);
       _ssSetOutputPortConnected(rts, 1, 0);
+      _ssSetOutputPortConnected(rts, 2, 0);
       _ssSetOutputPortBeingMerged(rts, 0, 0);
       _ssSetOutputPortBeingMerged(rts, 1, 0);
+      _ssSetOutputPortBeingMerged(rts, 2, 0);
 
       /* Update the BufferDstPort flags for each input port */
     }
@@ -386,8 +395,8 @@ RT_MODEL_AD_model_T *AD_model(void)
   AD_model_M->Sizes.sysDirFeedThru = (0);/* The model is not direct feedthrough */
   AD_model_M->Sizes.numSampTimes = (1);/* Number of sample times */
   AD_model_M->Sizes.numBlocks = (1);   /* Number of blocks */
-  AD_model_M->Sizes.numBlockIO = (2);  /* Number of block outputs */
-  AD_model_M->Sizes.numBlockPrms = (10);/* Sum of parameter "widths" */
+  AD_model_M->Sizes.numBlockIO = (3);  /* Number of block outputs */
+  AD_model_M->Sizes.numBlockPrms = (11);/* Sum of parameter "widths" */
   return AD_model_M;
 }
 
