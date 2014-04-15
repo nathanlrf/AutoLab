@@ -5,7 +5,7 @@
  *
  * Model version              : 1.9
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Mon Apr 14 15:35:41 2014
+ * C source code generated on : Tue Apr 15 15:46:25 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -22,7 +22,7 @@ P_DA_model_v2_T DA_model_v2_P = {
    * Referenced by: '<Root>/S-Function'
    */
   { 1.0, 1.0 },
-  1.0,                                 /* Expression: channel
+  2.0,                                 /* Expression: channel
                                         * Referenced by: '<Root>/S-Function'
                                         */
 
@@ -38,7 +38,7 @@ P_DA_model_v2_T DA_model_v2_P = {
    * Referenced by: '<Root>/S-Function'
    */
   { 1.0, 1.0 },
-  -4.3,                                /* Expression: volt
+  4.3,                                 /* Expression: volt
                                         * Referenced by: '<Root>/S-Function'
                                         */
 
