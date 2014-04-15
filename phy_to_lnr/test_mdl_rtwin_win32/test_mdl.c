@@ -5,7 +5,7 @@
  *
  * Model version              : 1.3
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Mon Apr 14 15:47:13 2014
+ * C source code generated on : Tue Apr 15 10:56:57 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -206,10 +206,10 @@ RT_MODEL_test_mdl_T *test_mdl(void)
   test_mdl_M->Timing.stepSize1 = 0.2;
 
   /* External mode info */
-  test_mdl_M->Sizes.checksums[0] = (2069225561U);
-  test_mdl_M->Sizes.checksums[1] = (668492855U);
-  test_mdl_M->Sizes.checksums[2] = (2613391448U);
-  test_mdl_M->Sizes.checksums[3] = (2915687380U);
+  test_mdl_M->Sizes.checksums[0] = (804086652U);
+  test_mdl_M->Sizes.checksums[1] = (752400197U);
+  test_mdl_M->Sizes.checksums[2] = (2948292015U);
+  test_mdl_M->Sizes.checksums[3] = (992789010U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;

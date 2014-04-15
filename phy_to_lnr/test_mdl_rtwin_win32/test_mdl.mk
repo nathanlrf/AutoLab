@@ -42,7 +42,7 @@
 #  SYS_TARGET_FILE - Name of system target file.
 #
 
-MAKECMD         = "D:/PROGRA~1/MATLAB/R2013b/bin/win32/gmake"
+MAKECMD         = "d:/PROGRA~1/MATLAB/R2013b/bin/win32/gmake"
 HOST            = PC
 BUILD           = yes
 SYS_TARGET_FILE = rtwin.tlc
@@ -80,8 +80,8 @@ MAKEFILE_FILESEP = /
 MODEL                := test_mdl
 MODULES              := rtGetInf.c rtGetNaN.c rt_matrx.c rt_nonfinite.c rt_printf.c test_mdl_data.c 
 MAKEFILE             := test_mdl.mk
-MATLAB_ROOT          := D:/PROGRA~1/MATLAB/R2013b
-MATLAB_BIN           := D:/PROGRA~1/MATLAB/R2013b/bin
+MATLAB_ROOT          := d:/PROGRA~1/MATLAB/R2013b
+MATLAB_BIN           := d:/PROGRA~1/MATLAB/R2013b/bin
 S_FUNCTIONS          := phy_to_lnr.c
 S_FUNCTIONS_LIB      := 
 SOLVER               := 
@@ -103,7 +103,7 @@ OPTIMIZATION_FLAGS   :=
 ADDITIONAL_LDFLAGS   := 
 
 # Real-Time Windows Target specific parameters
-RTWINDIR             := D:/PROGRA~1/MATLAB/R2013b/toolbox/rtw/targets/rtwin
+RTWINDIR             := d:/PROGRA~1/MATLAB/R2013b/toolbox/rtw/targets/rtwin
 TARGETARCH           := win32
 CC_LISTING           := 0
 REBUILD_ALL          := 0

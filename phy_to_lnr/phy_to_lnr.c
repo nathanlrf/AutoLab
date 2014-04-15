@@ -81,6 +81,10 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	
 	int result;
 	
+	// int virtual_addr=0x931d5000;
+	// int *PDE;
+	// int *PTE;
+	
 	const uint_T vendorID=0x11e3;
 	const uint_T DeviceID=0x2013;
 	
@@ -89,9 +93,15 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	
 	PhsclBaseAddr(info);
 	printf("The physical base addr is 0x%x\n",info->addr[0]);
-	// result=phscl_to_lnr(0xf7100000);
-	printf("phy_to_lnr result: %d\n",result);
+	result=phscl_to_lnr(info->addr[0]);
+	printf("phy_to_lnr result is 0x%x\n",result);
 	
+	
+	// PDE = (int *)(((virtual_addr>>21)<<3) & 0x3FF8 + 0xC0600000);
+	// printf("PDE result: 0x%x\n",*PDE);
+	
+	// PTE = (int *)(((virtual_addr>>12)<<3) & 0x7FFFF8 + 0xC0000000);
+	// printf("PTE result: 0x%x\n",*PTE);
 	// ptr=(volatile int *)0xc0400000;
 	// printf("%x\n",*ptr);
 	

@@ -5,7 +5,7 @@
  *
  * Model version              : 1.3
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Mon Apr 14 15:47:13 2014
+ * C source code generated on : Tue Apr 15 10:56:57 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
