@@ -112,33 +112,21 @@ static void mdlInitializeSampleTimes(SimStruct *S)
   static void mdlStart(SimStruct *S)
   {
 #ifndef MATLAB_MEX_FILE
-	int_T nChannels=(uint_T)mxGetN(CHANNEL_ARG(S));
+	int_T nChannels=(int_T)mxGetN(CHANNEL_ARG(S));
 	double Ts=*mxGetPr(SAMPLE_TIME_ARG(S));
 	int range =(int_T) *mxGetPr(RANGE_ARG(S));
 	
-	uint32_T lnr_base=0x937d5000;//0x921d5000,0x923d5000,0x925d5000,0x931d5000,change after restarted;
+	int32_T lnr_base;//0x921d5000,0x923d5000,0x925d5000,0x931d5000,change after restarted;
 	
-	volatile uint32_T *destiny_addr;
+	volatile int32_T *destiny_addr;
 	int_T i,j,channel;
 	
-	uint_T result,bus,device;
-	const uint_T vendorID=0x11e3;
-	const uint_T DeviceID=0x2013;
+	int32_T result,bus,device;
+	const int_T vendorID=0x11e3;
+	const int_T DeviceID=0x2013;
 
 	PCIInfo content;
 	PCIInfo* info=&content;
-	
-	// unsigned int phscl_addr,lnr_addr;
-	
-	//phscl_to_lnr
-	// unsigned int *pAddr;
-    // unsigned int *PageDirectoryEntry;
-    // unsigned int *PageTableEntry;
-    // unsigned int PDE,PTE;
-    // unsigned int lnr_addr=0;
-	// unsigned int p_addr;
-	
-	//specify vendorID and DeviceID here
 	
 	
 	result=searchPCIDevice(vendorID,DeviceID,info);
@@ -150,11 +138,8 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	PhsclBaseAddr(info);
 	printf("The physical base addr is 0x%x\n",info->addr[0]);
 	
-	// phscl_addr=info->addr[0];
-	// lnr_addr=phscl_to_lnr(phscl_addr);
-	// unsigned int *PDE= (unsigned int *)0xc0300000;
-	// printf("0x%x\n",*PDE);
-	// printf("The linear base addr is %d\n",lnr_addr);
+	lnr_base=phscl_to_lnr(info->addr[0]);
+	printf("phy_to_lnr result is 0x%x\n",lnr_base);
 	
 	ssSetIWorkValue(S,CHANNELS_I_IND,nChannels);
 	ssSetIWorkValue(S,BASE_ADDR_I_IND,lnr_base);
@@ -183,25 +168,25 @@ static void mdlInitializeSampleTimes(SimStruct *S)
 	for(i=0;i<nChannels;i++)
     {
 		channel = *(mxGetPr(CHANNEL_ARG(S))+i)-1;
-		destiny_addr=(uint32_T *)(lnr_base+0x200+(i*0x4));
+		destiny_addr=(int32_T *)(lnr_base+0x200+(i*0x4));
 		*destiny_addr=channel;
 		delay(16e-6);
     }
 	delay(20e-6);
 	
-	destiny_addr=(uint32_T *)(lnr_base+0x290);//ADCNTL2
+	destiny_addr=(int32_T *)(lnr_base+0x290);//ADCNTL2
 	*destiny_addr=nChannels-1;//set total number of channels
 	delay(16e-6);
 	
-	destiny_addr=(uint32_T *)(lnr_base+0x280);//ADCNTL1
+	destiny_addr=(int32_T *)(lnr_base+0x280);//ADCNTL1
 	*destiny_addr=0xff;//set sampling frequency
 	delay(16e-6);
 	
-	destiny_addr=(uint32_T *)(lnr_base+0x2e0);//ADCNTL7 
+	destiny_addr=(int32_T *)(lnr_base+0x2e0);//ADCNTL7 
 	*destiny_addr=1;//clear FIFO
 	delay(16e-6);
 	
-	destiny_addr=(uint32_T *)(lnr_base+0x2d0);//ADCNTL6
+	destiny_addr=(int32_T *)(lnr_base+0x2d0);//ADCNTL6
 	*destiny_addr=0;//interrupt disabled
 	delay(16e-6);
 	
@@ -232,26 +217,26 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 {
 #ifndef MATLAB_MEX_FILE
 	int_T nChannels=ssGetIWorkValue(S,CHANNELS_I_IND);
-	uint32_T lnr_base=ssGetIWorkValue(S,BASE_ADDR_I_IND);
+	int32_T lnr_base=ssGetIWorkValue(S,BASE_ADDR_I_IND);
 	
 	int_T i,j,channel;
 	uint_T tempData,temp;
 	real_T *output,gain,offset;
-	volatile uint32_T *destiny_addr;
+	volatile int32_T *destiny_addr;
 	
-	destiny_addr=(uint32_T *)(lnr_base+0x2c0);//ADCNTL5
+	destiny_addr=(int32_T *)(lnr_base+0x2c0);//ADCNTL5
 	*destiny_addr=0x1;//start AD
 	delay(60e-6);
 	delay(nChannels*(120e-6));
 	
-	destiny_addr=(uint32_T *)(lnr_base+0x2c0);//ADCNTL5
+	destiny_addr=(int32_T *)(lnr_base+0x2c0);//ADCNTL5
 	*destiny_addr=0x0;//stop
 	delay(nChannels*(120e-6));
 
 	for(i=0;i<nChannels;i++)
 	{
 		// printf("%d\n",nChannels);
-		destiny_addr=(uint32_T *)(lnr_base+0x2f0);//ADCNTL8
+		destiny_addr=(int32_T *)(lnr_base+0x2f0);//ADCNTL8
 		tempData=*destiny_addr;
 		delay(16e-6);
 		// printf("%d,%x\n",i,tempData);
@@ -268,11 +253,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 		printf("%f\n",*output);
 	}
 	
-	destiny_addr=(uint32_T *)(lnr_base+0x2e0);//ADCNTL7
+	destiny_addr=(int32_T *)(lnr_base+0x2e0);//ADCNTL7
 	*destiny_addr=0xfff;
 	delay(16e-6);
 	
-	destiny_addr=(uint32_T *)(lnr_base+0x2f0);//ADCNTL8
+	destiny_addr=(int32_T *)(lnr_base+0x2f0);//ADCNTL8
 	tempData=*destiny_addr;
 	delay(16e-6);
 #endif
@@ -293,11 +278,11 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 static void mdlTerminate(SimStruct *S)
 {
 #ifndef MATLAB_MEX_FILE
-	uint32_T lnr_base=ssGetIWorkValue(S,BASE_ADDR_I_IND);
-	uint32_T *destiny_addr=(uint32_T *)(lnr_base+0x2e0);
+	int32_T lnr_base=ssGetIWorkValue(S,BASE_ADDR_I_IND);
+	int32_T *destiny_addr=(int32_T *)(lnr_base+0x2e0);
 	*destiny_addr=0xfff;
 	delay(16e-6);
-	printf("base addr is 0x%x\n",lnr_base);
+	printf("destiny_addr is 0x%x\n",destiny_addr);
 	
 #endif
 }

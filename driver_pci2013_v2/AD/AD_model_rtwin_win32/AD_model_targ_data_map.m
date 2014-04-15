@@ -41,19 +41,19 @@
 	
 	  ;% AD_model_P.Get_Parameter_P2_Size
 	  section.data(3).logicalSrcIdx = 2;
-	  section.data(3).dtTransOffset = 5;
+	  section.data(3).dtTransOffset = 3;
 	
 	  ;% AD_model_P.Get_Parameter_P2
 	  section.data(4).logicalSrcIdx = 3;
-	  section.data(4).dtTransOffset = 7;
+	  section.data(4).dtTransOffset = 5;
 	
 	  ;% AD_model_P.Get_Parameter_P3_Size
 	  section.data(5).logicalSrcIdx = 4;
-	  section.data(5).dtTransOffset = 8;
+	  section.data(5).dtTransOffset = 6;
 	
 	  ;% AD_model_P.Get_Parameter_P3
 	  section.data(6).logicalSrcIdx = 5;
-	  section.data(6).dtTransOffset = 10;
+	  section.data(6).dtTransOffset = 8;
 	
       nTotData = nTotData + section.nData;
       paramMap.sections(1) = section;
@@ -100,20 +100,12 @@
     ;%
     ;% Auto data (AD_model_B)
     ;%
-      section.nData     = 3;
-      section.data(3)  = dumData; %prealloc
+      section.nData     = 1;
+      section.data(1)  = dumData; %prealloc
       
-	  ;% AD_model_B.Get_Parameter_o1
+	  ;% AD_model_B.Get_Parameter
 	  section.data(1).logicalSrcIdx = 0;
 	  section.data(1).dtTransOffset = 0;
-	
-	  ;% AD_model_B.Get_Parameter_o2
-	  section.data(2).logicalSrcIdx = 1;
-	  section.data(2).dtTransOffset = 1;
-	
-	  ;% AD_model_B.Get_Parameter_o3
-	  section.data(3).logicalSrcIdx = 2;
-	  section.data(3).dtTransOffset = 2;
 	
       nTotData = nTotData + section.nData;
       sigMap.sections(1) = section;
@@ -208,8 +200,8 @@
   ;%
 
 
-  targMap.checksum0 = 997782705;
-  targMap.checksum1 = 3883225624;
-  targMap.checksum2 = 2680686323;
-  targMap.checksum3 = 2220993960;
+  targMap.checksum0 = 3901477771;
+  targMap.checksum1 = 4057706284;
+  targMap.checksum2 = 227477489;
+  targMap.checksum3 = 819159214;
 
