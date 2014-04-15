@@ -4,7 +4,7 @@
 typedef struct pciD
 {
     int bus,device;
-    unsigned int addr[6];
+    int addr[6];
 }PCIInfo;
 
 int searchPCIDevice(unsigned int vendorID,unsigned int deviceID,PCIInfo *info)
@@ -39,7 +39,7 @@ int searchPCIDevice(unsigned int vendorID,unsigned int deviceID,PCIInfo *info)
 void PhsclBaseAddr(PCIInfo *info)
 {
 	int bus,device;
-	unsigned int iobase,ioa,temp;
+	int iobase,ioa,temp;
     int i;
 	
 	bus=info->bus;
@@ -80,32 +80,54 @@ void delay(double seconds)
 	}
 }
 
-unsigned int phscl_to_lnr(unsigned int phscl_addr)
+int phscl_to_lnr(int phscl_addr)
 {
-	unsigned int *p_addr;
-	unsigned int *PDE= (unsigned int *)0xc0300000;
-	unsigned int *PTE= (unsigned int *)0xc0000000;
+	int virtual_addr;
+	int *PDE= (int *)0xc0300000;
+	int *PTE= (int *)0xc0000000;
 	int i,j;
-	unsigned int result;
+	int result=0;
+	
+	//使用遍历
+	virtual_addr=0x901d5000;
+	for(;virtual_addr<0x95fd5000;virtual_addr+=0x00200000){
+		PDE = (int *)(((virtual_addr>>21)<<3) & 0x3FF8 + 0xC0600000);
+		if(((*PDE)&0x00000001)&&((*PDE)&0xfffff000)){
+			PTE = (int *)(((virtual_addr>>12)<<3) & 0x7FFFF8 + 0xC0000000);
+			if((*PTE)&0x00000001){
+				if(((*PTE)&0xfffff000)==(phscl_addr&0xfffff000))
+					result=virtual_addr;
+			}		
+		}	
+	}
+	
+	return result;
+}
+
+//修改师兄unsgined int导致的地址错误，改为int,始终出现蓝屏错误
+int phscl_to_lnr_v0(int phscl_addr)
+{
+	int *pAddr;
+	int *PDE= (int *)0xc0300000;
+	int *PTE= (int *)0xc0000000;
+	int i,j;
+	int result=0;
+	
 	for(i=0;i<1024;i++)
 	{
-		if(((*(PDE+i))&0x00000001)&&((*(PDE+i))&0xfffff000))
+		if((PDE[i]&0xfffff000)&&(PDE[i]&0x00000001))
 		{
-			
 			for(j=0;j<1024;j++)
 			{
-				p_addr=(unsigned int *)((unsigned int)PTE+i*4096+j*4);
-				if((*p_addr)&0x00000001)
+				pAddr=(int *)((int)PTE+i*4096+j*4);
+				if((*pAddr)&0x00000001)
 				{
-					if(((*p_addr)&0xfffff000)==(phscl_addr&0xfffff000))
-					{
-						result=(unsigned int)(((i*4*1024*1024+j*4*1024)&0xfffff000)|(phscl_addr&0x00000fff));
+					if(((*pAddr)&0xfffff000)==(phscl_addr&0xfffff000))
+						result=(int) (((i*4*1024*1024+j*4*1024)&0xfffff000)|(phscl_addr&0x00000fff));
 						return result;
-					}
 				}
 			}
 		}
 	}
-	
 	return 0;
 }

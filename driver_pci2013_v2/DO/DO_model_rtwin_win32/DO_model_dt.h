@@ -5,7 +5,7 @@
  *
  * Model version              : 1.4
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Fri Apr 11 15:52:37 2014
+ * C source code generated on : Tue Apr 15 11:27:59 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -55,11 +55,14 @@ static const char_T * rtDataTypeNames[] = {
 /* data type transitions for block I/O structure */
 static DataTypeTransition rtBTransitions[] = {
   { (char_T *)(&DO_model_B.SFunction), 0, 0, 1 }
+  ,
+
+  { (char_T *)(&DO_model_DW.SFunction_IWORK), 10, 0, 1 }
 };
 
 /* data type transition table for block I/O structure */
 static DataTypeTransitionTable rtBTransTable = {
-  1U,
+  2U,
   rtBTransitions
 };
 

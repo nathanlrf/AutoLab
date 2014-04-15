@@ -5,7 +5,7 @@
  *
  * Model version              : 1.4
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Fri Apr 11 15:52:37 2014
+ * C source code generated on : Tue Apr 15 11:27:59 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -783,11 +783,18 @@ typedef struct {
   real_T SFunction;                    /* '<Root>/S-Function' */
 } B_DO_model_T;
 
+/* Block states (auto storage) for system '<Root>' */
+typedef struct {
+  int_T SFunction_IWORK;               /* '<Root>/S-Function' */
+} DW_DO_model_T;
+
 /* Backward compatible GRT Identifiers */
 #define rtB                            DO_model_B
 #define BlockIO                        B_DO_model_T
 #define rtP                            DO_model_P
 #define Parameters                     P_DO_model_T
+#define rtDWork                        DO_model_DW
+#define D_Work                         DW_DO_model_T
 
 /* Parameters (auto storage) */
 struct P_DO_model_T_ {
@@ -832,6 +839,8 @@ struct tag_RTM_DO_model_T {
       struct _ssPortOutputs outputPortInfo[1];
       uint_T attribs[1];
       mxArray *params[1];
+      struct _ssDWorkRecord dWork[1];
+      struct _ssDWorkAuxRecord dWorkAux[1];
     } Sfcn0;
   } NonInlinedSFcns;
 
@@ -933,6 +942,9 @@ extern P_DO_model_T DO_model_P;
 
 /* Block signals (auto storage) */
 extern B_DO_model_T DO_model_B;
+
+/* Block states (auto storage) */
+extern DW_DO_model_T DO_model_DW;
 
 /* Model entry point functions */
 extern void DO_model_initialize(void);

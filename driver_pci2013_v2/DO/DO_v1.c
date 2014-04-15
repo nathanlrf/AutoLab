@@ -6,6 +6,9 @@
 #define DIGITAL_OUTPUT_INDEX 0
 #define DIGITAL_OUTPUT_ARG(S) ssGetSFcnParam(S,0)
 
+#define INT_WORK_NO 1
+#define LNR_ADDR_INDEX 0
+
 /*
  * Need to include simstruc.h for the definition of the SimStruct and
  * its associated macro definitions.
@@ -40,7 +43,7 @@ static void mdlInitializeSizes(SimStruct *S)
 
     ssSetNumSampleTimes(S, 1);
     ssSetNumRWork(S, 0);
-    ssSetNumIWork(S, 0);
+    ssSetNumIWork(S, INT_WORK_NO);
     ssSetNumPWork(S, 0);
     ssSetNumModes(S, 0);
     ssSetNumNonsampledZCs(S, 0);
@@ -79,6 +82,26 @@ static void mdlInitializeSampleTimes(SimStruct *S)
    */
   static void mdlStart(SimStruct *S)
   {
+#ifndef MATLAB_MEX_FILE
+	PCIInfo content;
+	PCIInfo* info=&content;
+	
+	const int vendorID=0x11e3;
+	const int DeviceID=0x2013;
+	
+	int result=0;
+	
+	result=searchPCIDevice(vendorID,DeviceID,info);
+	printf("%d\n",result);
+	
+	PhsclBaseAddr(info);
+	printf("The physical base addr is 0x%x\n",info->addr[0]);
+	
+	result=phscl_to_lnr(info->addr[0]);
+	printf("phy_to_lnr result is 0x%x\n",result);
+	
+	ssSetIWorkValue(S,LNR_ADDR_INDEX,result);
+#endif	
   }
 #endif /*  MDL_START */
 
@@ -93,8 +116,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 {
 #ifndef MATLAB_MEX_FILE
 
-	volatile uint32_T *destiny_addr;
-	uint32_T lnr_addr=0x931d5000;//0x921d5000,0x931d5000,0x925d5000;
+	volatile int32_T *destiny_addr;
+	int32_T lnr_addr=ssGetIWorkValue(S,LNR_ADDR_INDEX);//0x921d5000,0x931d5000,0x925d5000;
 	int32_T d_output;
 
 	d_output=*mxGetPr(DIGITAL_OUTPUT_ARG(S));
@@ -106,7 +129,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
 	{
 		d_output=0x1;
 	}
-	destiny_addr=(uint32_T *)(lnr_addr+0x600);
+	destiny_addr=(int32_T *)(lnr_addr+0x600);
 	*destiny_addr=d_output;
 	delay(16e-6);
 #endif    

@@ -5,7 +5,7 @@
  *
  * Model version              : 1.4
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Fri Apr 11 15:52:37 2014
+ * C source code generated on : Tue Apr 15 11:27:59 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -25,6 +25,9 @@ const double RTWinTimers[2] = {
 
 /* Block signals (auto storage) */
 B_DO_model_T DO_model_B;
+
+/* Block states (auto storage) */
+DW_DO_model_T DO_model_DW;
 
 /* Real-time model */
 RT_MODEL_DO_model_T DO_model_M_;
@@ -198,10 +201,10 @@ RT_MODEL_DO_model_T *DO_model(void)
   DO_model_M->Timing.stepSize1 = 0.02;
 
   /* External mode info */
-  DO_model_M->Sizes.checksums[0] = (3905721102U);
-  DO_model_M->Sizes.checksums[1] = (597057735U);
-  DO_model_M->Sizes.checksums[2] = (2614732836U);
-  DO_model_M->Sizes.checksums[3] = (1397153205U);
+  DO_model_M->Sizes.checksums[0] = (1233238421U);
+  DO_model_M->Sizes.checksums[1] = (25660452U);
+  DO_model_M->Sizes.checksums[2] = (2649484807U);
+  DO_model_M->Sizes.checksums[3] = (3179384684U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -228,6 +231,11 @@ RT_MODEL_DO_model_T *DO_model(void)
 
   /* parameters */
   DO_model_M->ModelData.defaultParam = ((real_T *)&DO_model_P);
+
+  /* states (dwork) */
+  DO_model_M->ModelData.dwork = ((void *) &DO_model_DW);
+  (void) memset((void *)&DO_model_DW, 0,
+                sizeof(DW_DO_model_T));
 
   /* data type transition information */
   {
@@ -349,6 +357,25 @@ RT_MODEL_DO_model_T *DO_model(void)
         ssSetSFcnParamsCount(rts, 1);
         ssSetSFcnParamsPtr(rts, &sfcnParams[0]);
         ssSetSFcnParam(rts, 0, (mxArray*)DO_model_P.SFunction_P1_Size);
+      }
+
+      /* work vectors */
+      ssSetIWork(rts, (int_T *) &DO_model_DW.SFunction_IWORK);
+
+      {
+        struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
+          &DO_model_M->NonInlinedSFcns.Sfcn0.dWork;
+        struct _ssDWorkAuxRecord *dWorkAuxRecord = (struct _ssDWorkAuxRecord *)
+          &DO_model_M->NonInlinedSFcns.Sfcn0.dWorkAux;
+        ssSetSFcnDWork(rts, dWorkRecord);
+        ssSetSFcnDWorkAux(rts, dWorkAuxRecord);
+        _ssSetNumDWork(rts, 1);
+
+        /* IWORK */
+        ssSetDWorkWidth(rts, 0, 1);
+        ssSetDWorkDataType(rts, 0,SS_INTEGER);
+        ssSetDWorkComplexSignal(rts, 0, 0);
+        ssSetDWork(rts, 0, &DO_model_DW.SFunction_IWORK);
       }
 
       /* registration */
