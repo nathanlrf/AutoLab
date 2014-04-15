@@ -3,9 +3,9 @@
  *
  * Code generation for model "DI_model".
  *
- * Model version              : 1.4
+ * Model version              : 1.5
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Fri Apr 11 15:44:40 2014
+ * C source code generated on : Tue Apr 15 11:18:06 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping

@@ -3,9 +3,9 @@
  *
  * Code generation for model "DI_model".
  *
- * Model version              : 1.4
+ * Model version              : 1.5
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Fri Apr 11 15:44:40 2014
+ * C source code generated on : Tue Apr 15 11:18:06 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -778,6 +778,15 @@
 /* Definition for use in the target main file */
 #define DI_model_rtModel               RT_MODEL_DI_model_T
 
+/* Block states (auto storage) for system '<Root>' */
+typedef struct {
+  int_T SFunction_IWORK;               /* '<Root>/S-Function' */
+} DW_DI_model_T;
+
+/* Backward compatible GRT Identifiers */
+#define rtDWork                        DI_model_DW
+#define D_Work                         DW_DI_model_T
+
 /* Real-time Model Data Structure */
 struct tag_RTM_DI_model_T {
   const char_T *path;
@@ -809,6 +818,8 @@ struct tag_RTM_DI_model_T {
       time_T sfcnOffset[1];
       int_T sfcnTsMap[1];
       struct _ssPortInputs inputPortInfo[1];
+      struct _ssDWorkRecord dWork[1];
+      struct _ssDWorkAuxRecord dWorkAux[1];
     } Sfcn0;
   } NonInlinedSFcns;
 
@@ -904,6 +915,9 @@ struct tag_RTM_DI_model_T {
     time_T tArray[2];
   } Timing;
 };
+
+/* Block states (auto storage) */
+extern DW_DI_model_T DI_model_DW;
 
 /* External data declarations for dependent source files */
 extern const real_T DI_model_RGND;     /* real_T ground */

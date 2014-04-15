@@ -3,9 +3,9 @@
  *
  * Code generation for model "DI_model".
  *
- * Model version              : 1.4
+ * Model version              : 1.5
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Fri Apr 11 15:44:40 2014
+ * C source code generated on : Tue Apr 15 11:18:06 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -24,6 +24,9 @@ const double RTWinTimers[2] = {
 };
 
 const real_T DI_model_RGND = 0.0;      /* real_T ground */
+
+/* Block states (auto storage) */
+DW_DI_model_T DI_model_DW;
 
 /* Real-time model */
 RT_MODEL_DI_model_T DI_model_M_;
@@ -197,10 +200,10 @@ RT_MODEL_DI_model_T *DI_model(void)
   DI_model_M->Timing.stepSize1 = 0.01;
 
   /* External mode info */
-  DI_model_M->Sizes.checksums[0] = (943881189U);
-  DI_model_M->Sizes.checksums[1] = (2376373844U);
-  DI_model_M->Sizes.checksums[2] = (1356612486U);
-  DI_model_M->Sizes.checksums[3] = (687118842U);
+  DI_model_M->Sizes.checksums[0] = (643900350U);
+  DI_model_M->Sizes.checksums[1] = (2770069371U);
+  DI_model_M->Sizes.checksums[2] = (2746067867U);
+  DI_model_M->Sizes.checksums[3] = (3163517665U);
 
   {
     static const sysRanDType rtAlwaysEnabled = SUBSYS_RAN_BC_ENABLE;
@@ -220,6 +223,11 @@ RT_MODEL_DI_model_T *DI_model(void)
   rtsiSetFixedStepSize(&DI_model_M->solverInfo, 0.01);
   rtsiSetSolverMode(&DI_model_M->solverInfo, SOLVER_MODE_SINGLETASKING);
 
+  /* states (dwork) */
+  DI_model_M->ModelData.dwork = ((void *) &DI_model_DW);
+  (void) memset((void *)&DI_model_DW, 0,
+                sizeof(DW_DI_model_T));
+
   /* data type transition information */
   {
     static DataTypeTransInfo dtInfo;
@@ -229,6 +237,9 @@ RT_MODEL_DI_model_T *DI_model(void)
     dtInfo.numDataTypes = 14;
     dtInfo.dataTypeSizes = &rtDataTypeSizes[0];
     dtInfo.dataTypeNames = &rtDataTypeNames[0];
+
+    /* Block I/O transition table */
+    dtInfo.B = &rtBTransTable;
   }
 
   /* child S-Function registration */
@@ -327,6 +338,25 @@ RT_MODEL_DI_model_T *DI_model(void)
       ssSetParentSS(rts, (NULL));
       ssSetRootSS(rts, rts);
       ssSetVersion(rts, SIMSTRUCT_VERSION_LEVEL2);
+
+      /* work vectors */
+      ssSetIWork(rts, (int_T *) &DI_model_DW.SFunction_IWORK);
+
+      {
+        struct _ssDWorkRecord *dWorkRecord = (struct _ssDWorkRecord *)
+          &DI_model_M->NonInlinedSFcns.Sfcn0.dWork;
+        struct _ssDWorkAuxRecord *dWorkAuxRecord = (struct _ssDWorkAuxRecord *)
+          &DI_model_M->NonInlinedSFcns.Sfcn0.dWorkAux;
+        ssSetSFcnDWork(rts, dWorkRecord);
+        ssSetSFcnDWorkAux(rts, dWorkAuxRecord);
+        _ssSetNumDWork(rts, 1);
+
+        /* IWORK */
+        ssSetDWorkWidth(rts, 0, 1);
+        ssSetDWorkDataType(rts, 0,SS_INTEGER);
+        ssSetDWorkComplexSignal(rts, 0, 0);
+        ssSetDWork(rts, 0, &DI_model_DW.SFunction_IWORK);
+      }
 
       /* registration */
       DI_v1(rts);

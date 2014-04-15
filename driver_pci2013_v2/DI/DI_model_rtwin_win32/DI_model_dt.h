@@ -3,9 +3,9 @@
  *
  * Code generation for model "DI_model".
  *
- * Model version              : 1.4
+ * Model version              : 1.5
  * Simulink Coder version : 8.5 (R2013b) 08-Aug-2013
- * C source code generated on : Fri Apr 11 15:44:40 2014
+ * C source code generated on : Tue Apr 15 11:18:06 2014
  *
  * Target selection: rtwin.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -50,6 +50,17 @@ static const char_T * rtDataTypeNames[] = {
   "pointer_T",
   "action_T",
   "timer_uint32_pair_T"
+};
+
+/* data type transitions for block I/O structure */
+static DataTypeTransition rtBTransitions[] = {
+  { (char_T *)(&DI_model_DW.SFunction_IWORK), 10, 0, 1 }
+};
+
+/* data type transition table for block I/O structure */
+static DataTypeTransitionTable rtBTransTable = {
+  1U,
+  rtBTransitions
 };
 
 /* [EOF] DI_model_dt.h */

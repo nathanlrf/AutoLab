@@ -85,7 +85,7 @@
   ;%*******************
       
     nTotData      = 0; %add to this count as we go
-    nTotSects     = 0;
+    nTotSects     = 1;
     sectIdxOffset = 0;
     
     ;%
@@ -102,11 +102,23 @@
     ;%
     dworkMap.nSections           = nTotSects;
     dworkMap.sectIdxOffset       = sectIdxOffset;
+      dworkMap.sections(nTotSects) = dumSection; %prealloc
     dworkMap.nTotData            = -1;
     
     ;%
     ;% Auto data (DI_model_DW)
     ;%
+      section.nData     = 1;
+      section.data(1)  = dumData; %prealloc
+      
+	  ;% DI_model_DW.SFunction_IWORK
+	  section.data(1).logicalSrcIdx = 0;
+	  section.data(1).dtTransOffset = 0;
+	
+      nTotData = nTotData + section.nData;
+      dworkMap.sections(1) = section;
+      clear section
+      
     
       ;%
       ;% Non-auto Data (dwork)
@@ -133,8 +145,8 @@
   ;%
 
 
-  targMap.checksum0 = 943881189;
-  targMap.checksum1 = 2376373844;
-  targMap.checksum2 = 1356612486;
-  targMap.checksum3 = 687118842;
+  targMap.checksum0 = 643900350;
+  targMap.checksum1 = 2770069371;
+  targMap.checksum2 = 2746067867;
+  targMap.checksum3 = 3163517665;
 
